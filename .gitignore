@@ -1,0 +1,15 @@
+.dart_tool/
+.packages
+.pub/
+build/
+.idea/
+.vscode/
+*.keystore
+*.jks
+**/ios/Flutter/Flutter.framework
+**/android/key.properties
+.env
+.env.*
+secrets.json
+_supabase/
+node_modules/

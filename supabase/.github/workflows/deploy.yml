@@ -1,0 +1,32 @@
+name: Supabase Deploy
+
+on:
+  workflow_dispatch: {}
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update && sudo apt-get install -y build-essential libpq-dev postgresql-client
+          npm install -g supabase
+
+      - name: Supabase - apply migrations and deploy functions
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          SUPABASE_PROJECT_REF: ${{ secrets.SUPABASE_PROJECT_REF }}
+        run: |
+          set -e
+          # Login using Service Role key (non-interactive)
+          echo "$SUPABASE_SERVICE_ROLE_KEY" > supabase_service_role_key.txt
+          supabase login --service-role $(cat supabase_service_role_key.txt) || true
+          # Push DB migrations from repo
+          supabase db push --project-ref $SUPABASE_PROJECT_REF
+          # Deploy edge functions
+          supabase functions deploy resgatar --project-ref $SUPABASE_PROJECT_REF --no-verify-jwt
+          supabase functions deploy transfer --project-ref $SUPABASE_PROJECT_REF --no-verify-jwt
+          supabase functions deploy process_receipt --project-ref $SUPABASE_PROJECT_REF --no-verify-jwt
