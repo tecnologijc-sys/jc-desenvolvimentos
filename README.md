@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Cashback+
 
 Production-ready scaffolding for Cashback Hub (Flutter + Supabase)
@@ -51,3 +52,6 @@ Next steps suggestions:
 - Implement OTP/email-based sign-up flow using Supabase Auth.
 - Integrate real partners for adiantamento (advance) and payouts.
 - Harden RPC `transfer_cashback` and add rate-limits and audit hooks.
+=======
+# jc-desenvolvimentos
+>>>>>>> e06442411c9959257c2d882e22ac3ae62e06cee9
