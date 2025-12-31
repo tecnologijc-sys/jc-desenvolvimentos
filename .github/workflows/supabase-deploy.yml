@@ -9,19 +9,24 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
 
       - name: Install Supabase CLI
         run: |
+          echo "Instalando Supabase CLI..."
           curl -fsSL https://get.supabase.com/cli | sh
 
-      - name: Deploy to Supabase
+      - name: Deploy to Supabase (detailed logs)
         env:
           SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
           SUPABASE_PROJECT_REF: ${{ secrets.SUPABASE_PROJECT_REF }}
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
         run: |
+          set -x  # Mostra cada comando executado
+          echo "Iniciando deploy Supabase..."
           supabase db push
+          echo "Deploy concluído!"
